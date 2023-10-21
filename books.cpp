@@ -60,32 +60,58 @@ class Book{
             myFile.close();
             return "-1";
         }
-        void modify_book(string book_name, string new_book_name, string new_author_name){
+        pair<int, int> get_line_no_and_line_size(string book_name){
             fstream myFile;
             string line, book, new_line;
             myFile.open("books.txt", ios::in);
+            int line_no = 0; // 1-based
             while(!myFile.eof()){
+                line_no++;
                 getline(myFile, line);
                 int i;
                 for(i = 0; line[i] != ','; i++) book += line[i];
                 i += 2;
                 if(book == book_name){
-                    // overwrite and add spaces 
-                    for(i = 0; i < line.size(); i++) cout << ' ';
+                    break;
                 }
+                line.clear();
+                book.clear();
+            }
+            myFile.close();
+            return make_pair(line_no, line.size());
+        }
+        void modify_book(string book_name, string new_book_name, string new_author_name){ // incomplete
+            fstream myFile;
+            string line, book, new_line;
+            myFile.open("books.txt", ios::in | ios::out);
+            int line_no = 0, req_line_no = get_line_no_and_line_size(book_name).first, req_line_size = get_line_no_and_line_size(book_name).second;
+            while(!myFile.eof()){
+                if(line_no == req_line_no - 1){
+                    break;
+                }
+                line_no++;
+                line.clear();
+                getline(myFile, line);
+            }
+            cout << "\r";
+            if((new_book_name + ", " + new_author_name).size() >= req_line_size) myFile << new_book_name << ", " << new_author_name;
+            else{
+                myFile << new_book_name << ", " << new_author_name;
+                for(int i = (new_book_name + ", " + new_author_name).size(); i < req_line_size; i++) myFile << ' ';
+                myFile << endl;
             }
             myFile.close();
         }
 };
 int main(){
-    int choice;
+    string choice;
     while(true){
         cout << "Press a number : \n1. Display books\n2. Add book\n3. Modify book\n4. Find author\n5. Exit\n";
-        cin >> choice;
-        if(choice == 1){
+        getline(cin, choice);
+        if(choice == "1"){
             (new Book())->display_books();
         }
-        else if(choice == 2){ 
+        else if(choice == "2"){ 
             string book_name, author_name;
             cout << "Enter book name : \n";
             cin >> book_name;
@@ -94,7 +120,7 @@ int main(){
             (new Book())->add_book(book_name, author_name); 
             cout << "Book added successfully !\n";
         }   
-        else if(choice == 3){
+        else if(choice == "3"){
             string book_name, author_name; 
             cout << "Enter name of book to be modified : \n";
             cin >> book_name;
@@ -110,17 +136,17 @@ int main(){
                 cout << "Book modified successfully !\n";
             }
         }
-        else if(choice == 4){
+        else if(choice == "4"){
             string book_name, author_name;
             cout << "Enter book name : \n";
             cin >> book_name;
             author_name = (new Book())->find_author(book_name);
             author_name != "-1" ? cout << author_name << endl : cout << "Book not present in library !\n";
         }
-        else if(choice == 5){
+        else if(choice == "5"){
             cout << "Thank you for using my library !\n";
             break;
         }
-        else cout << "Invalid choice !";
+        else cout << "Invalid input !" << endl;
     }
 }
