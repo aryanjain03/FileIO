@@ -80,28 +80,28 @@ class Book{
             myFile.close();
             return make_pair(line_no, line.size());
         }
-        void modify_book(string book_name, string new_book_name, string new_author_name){ // incomplete
-            fstream myFile;
-            string line, book, new_line;
-            myFile.open("books.txt", ios::in | ios::out);
-            int line_no = 0, req_line_no = get_line_no_and_line_size(book_name).first, req_line_size = get_line_no_and_line_size(book_name).second;
-            while(!myFile.eof()){
-                if(line_no == req_line_no - 1){
-                    break;
-                }
-                line_no++;
-                line.clear();
-                getline(myFile, line);
-            }
-            cout << "\r";
-            if((new_book_name + ", " + new_author_name).size() >= req_line_size) myFile << new_book_name << ", " << new_author_name;
-            else{
-                myFile << new_book_name << ", " << new_author_name;
-                for(int i = (new_book_name + ", " + new_author_name).size(); i < req_line_size; i++) myFile << ' ';
-                myFile << endl;
-            }
-            myFile.close();
-        }
+        // void modify_book(string book_name, string new_book_name, string new_author_name){ // incomplete
+        //     fstream myFile;
+        //     string line, book, new_line;
+        //     myFile.open("books.txt", ios::in | ios::out);
+        //     int line_no = 0, req_line_no = get_line_no_and_line_size(book_name).first, req_line_size = get_line_no_and_line_size(book_name).second;
+        //     while(!myFile.eof()){
+        //         if(line_no == req_line_no - 1){
+        //             break;
+        //         }
+        //         line_no++;
+        //         line.clear();
+        //         getline(myFile, line);
+        //     }
+        //     cout << "\r";
+        //     if((new_book_name + ", " + new_author_name).size() >= req_line_size) myFile << new_book_name << ", " << new_author_name;
+        //     else{
+        //         myFile << new_book_name << ", " << new_author_name;
+        //         for(int i = (new_book_name + ", " + new_author_name).size(); i < req_line_size; i++) myFile << ' ';
+        //         myFile << endl;
+        //     }
+        //     myFile.close();
+        // }
 };
 int main(){
     string choice;
